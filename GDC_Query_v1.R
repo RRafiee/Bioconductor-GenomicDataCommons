@@ -56,7 +56,7 @@ ge_manifest = files() %>%
   manifest()
 
 ge_manifest = files() %>% 
-  filter( ~ cases.project.project_id == '	TCGA-LUAD' &
+  filter( ~ cases.project.project_id == 'TCGA-LUAD' &
             type == 'gene_expression' &
             analysis.workflow_type == 'HTSeq - Counts') %>%
   manifest()
