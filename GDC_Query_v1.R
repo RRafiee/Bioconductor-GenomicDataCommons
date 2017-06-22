@@ -46,20 +46,21 @@ library(GenomicDataCommons)
 
 #############################################################
 #Check basic functionality
-GenomicDataCommons::status()
+#GenomicDataCommons::status()
 
-library(magrittr)
-ge_manifest = files() %>% 
-  filter( ~ cases.project.project_id == 'TCGA-OV' &
-            type == 'gene_expression' &
-            analysis.workflow_type == 'HTSeq - Counts') %>%
-  manifest()
+#library(magrittr)
 
-ge_manifest = files() %>% 
-  filter( ~ cases.project.project_id == 'TCGA-LUAD' &
-            type == 'gene_expression' &
-            analysis.workflow_type == 'HTSeq - Counts') %>%
-  manifest()
+#ge_manifest = files() %>% 
+#  filter( ~ cases.project.project_id == 'TCGA-OV' &
+#            type == 'gene_expression' &
+#            analysis.workflow_type == 'HTSeq - Counts') %>%
+#  manifest()
+
+#ge_manifest = files() %>% 
+#  filter( ~ cases.project.project_id == 'TCGA-LUAD' &
+#            type == 'gene_expression' &
+#            analysis.workflow_type == 'HTSeq - Counts') %>%
+# manifest()
 #############################################################
 
 #############################################################
