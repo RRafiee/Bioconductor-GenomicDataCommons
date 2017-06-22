@@ -5,7 +5,7 @@
 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 # Dr Reza Rafiee, June 2017
 # Research Fellow, Queen's University Belfast
-# Genomic Data common (GDC) query script for lung cancer
+# Genomic Data common (GDC) query script for the lung cancer (Adenocarcinoma and Squamous cell carcinoma)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 install_all_packages_automatic <- function(x) {
@@ -67,14 +67,29 @@ install_all_packages_automatic("mnormt")
 install_all_packages_automatic("TCGAbiolinks")
 library(TCGAbiolinks)
 
-query <- GDCquery(project = "TCGA-LUAD", 
+query_LUAD <- GDCquery(project = "TCGA-LUAD", 
                   legacy = TRUE,
                   data.category = "Gene expression", 
                   data.type = "Gene expression quantification",
                   platform = "Illumina HiSeq",
                   file.type = "normalized_results", 
                   experimental.strategy = "RNA-Seq")
-GDCdownload(query)
+
+GDCdownload(query_LUAD)
+
+query_LUSC <- GDCquery(project = "TCGA-LUSC", 
+                  legacy = TRUE,
+                  data.category = "Gene expression", 
+                  data.type = "Gene expression quantification",
+                  platform = "Illumina HiSeq",
+                  file.type = "normalized_results", 
+                  experimental.strategy = "RNA-Seq")
+
+GDCdownload(query_LUSC)
+
+#query <- query_LUAD
+query <- query_LUSC
+
 # Case 1: Dataframe as output
 df <- GDCprepare(query, 
                  save=TRUE,
@@ -94,10 +109,9 @@ se <- GDCprepare(query,
 ## get gene Expression values
 geneExp <- SummarizedExperiment::assay(se)
 #############################################################
-
 # Loading data
-load("LUAD_geneExp_dataframe.rda")
-df_LUAD_TCGA <- data
+#load("LUAD_geneExp_dataframe.rda")
+#df_LUAD_TCGA <- data
 
 
 
