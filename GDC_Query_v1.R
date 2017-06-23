@@ -114,10 +114,88 @@ geneExp <- SummarizedExperiment::assay(se)
 #load("LUAD_geneExp_dataframe.rda")
 #df_LUAD_TCGA <- data
 
+#############################################################
+# This part aims to matche colnames of df with the DDRD table
+
+# extract the name of samples matched with the DDRD table
+for (i in 1:ncol(df))
+{
+  pos11 <- regexpr('TCGA', colnames(df)[i])
+  N1 <- substr(colnames(df)[i], pos11[1],pos11[1]+14)
+  N1 <- gsub("-", ".", N1)
+  colnames(df)[i] <- N1
+}
+
+#which(colnames(df) == as.character(LUAD_Samples_DDRD[,1]))
+#iii <- match(colnames(df),as.character(LUAD_Samples_DDRD[,1]))
+
+# order the df table based on column names and LUAD_Samples_DDRS table based on the first row
+LUAD_Samples_DDRD_ordered <- LUAD_Samples_DDRD[order(LUAD_Samples_DDRD[,1], decreasing = TRUE),]
+df_ordered <- df[,order(colnames(df), decreasing = TRUE)]
+
+matchtable <- match(colnames(df_ordered), LUAD_Samples_DDRD_ordered[,1])
+which(matchtable[]!="NA")
+
+df_ordered_matched <- df_ordered[,which(matchtable[]!="NA")]
+
+
+# DDRD assay gene symbols
+DDRD_Assay_Genelist <- c("CXCL10","MX1","IDO1","IFI44L","CD2","GBP5","PRAME","ITGAL","LRP4","APOL3","CDR1","FYB","TSPAN7",
+"RAC2","KLHDC7B","GRB14","AC138128.1","KIF26A","CD274","CD109","ETV7","MFAP5","OLFM4","PI15",
+"FOSB","FAM19A5","NLRC5","PRICKLE1","EGR1","CLDN10","ADAMTS4","SP140L","ANXA1","RSAD2","ESR1",
+"IKZF3","OR2I1P","EGFR","NAT1","LATS2","CYP2B6","PTPRC","PPP1R1A","AL137218.1")
+
+matchtable2 <- vector()
+matchtable21<- matchtable2
+for (j in 1:length(DDRD_Assay_Genelist))
+{
+  
+  #j <- 2
+  matchtable2 <- grep(DDRD_Assay_Genelist[j],rownames(df_ordered_matched))
+  if (length(matchtable2) > 1)
+  {
+    for (k in 1:length(matchtable2))
+    {
+      #k <- 4
+      gene_name_str <- rownames(df_ordered_matched)[matchtable2[k]]
+      part_before_pipe <- unlist(strsplit(gene_name_str, "|", fixed=TRUE))[1] # first part of gene name EMX1 of EMX1|2016
+      idx_match <- grep(paste("^",DDRD_Assay_Genelist[j],"$",sep = ""),part_before_pipe)
+      if (length(idx_match) != 0)
+      {
+        matchtable2 <- matchtable2[k]
+      }
+    }
+  }
+  matchtable21 <- c(matchtable21,matchtable2)
+}
+
+df_ordered_matched_Genes <- as.data.frame(df_ordered_matched[matchtable21,])
+
+
+matchtable3 <- grep("AC138128.1",rownames(df_ordered_matched)) # no gene name in downloaded table
+matchtable3 <- grep("OR2I1P",rownames(df_ordered_matched))     # no gene name ...
+matchtable3 <- grep("AL137218.1",rownames(df_ordered_matched)) # no gene name ...
+
+
+rn_Samples <- colnames(df_ordered_matched_Genes)
+df_ordered_matched_Genes <- t(df_ordered_matched_Genes)
+rownames(df_ordered_matched_Genes) <- rn_Samples
+
+save(df_ordered_matched_Genes,file="df_ordered_matched_Gene_23June17.rda")
+save(LUAD_Samples_DDRD_ordered,file="LUAD_Samples_DDRD_ordered_23June17.rda")
 
 
 
-
+# ## try http:// if https:// URLs are not supported
+# source("https://bioconductor.org/biocLite.R")
+# biocLite("TCGAbiolinksGUI")
+# library(TCGAbiolinksGUI)
+# #install_all_packages_automatic("shinydashboard")
+# install.packages("shiny")
+# install.packages("dplyr")
+# library(shiny)
+# library(dplyr)
+# TCGAbiolinksGUI(run = TRUE)
 
 
 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
