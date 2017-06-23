@@ -117,6 +117,9 @@ geneExp <- SummarizedExperiment::assay(se)
 #############################################################
 # This part aims to matche colnames of df with the DDRD table
 
+LUAD_Samples_DDRD <- read.table("tcga_luad_ClinicalData_cbioportal_incDDRD.txt",header=T, sep="\t")  # 
+LUSC_Samples_DDRD <- read.table("tcga_lusc_ClinicalData_cbioportal_incDDRD.txt",header=T, sep="\t")  # 
+
 # extract the name of samples matched with the DDRD table
 for (i in 1:ncol(df))
 {
