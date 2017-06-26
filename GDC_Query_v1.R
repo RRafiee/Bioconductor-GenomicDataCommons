@@ -140,6 +140,9 @@ df <- df_LUSC_TCGA
 LUAD_Samples_DDRD <- read.table("tcga_luad_ClinicalData_cbioportal_incDDRD.txt",header=T, sep="\t")  # 
 LUSC_Samples_DDRD <- read.table("tcga_lusc_ClinicalData_cbioportal_incDDRD.txt",header=T, sep="\t")  # 
 
+#LUXX_Samples_DDRD <- LUAD_Samples_DDRD
+LUXX_Samples_DDRD <- LUSC_Samples_DDRD
+
 # extract the name of samples matched with the DDRD table
 for (i in 1:ncol(df))
 {
@@ -153,10 +156,10 @@ for (i in 1:ncol(df))
 #iii <- match(colnames(df),as.character(LUAD_Samples_DDRD[,1]))
 
 # order the df table based on column names and LUAD_Samples_DDRS table based on the first row
-LUAD_Samples_DDRD_ordered <- LUAD_Samples_DDRD[order(LUAD_Samples_DDRD[,1], decreasing = TRUE),]
+LUXX_Samples_DDRD_ordered <- LUX_Samples_DDRD[order(LUXX_Samples_DDRD[,1], decreasing = TRUE),]
 df_ordered <- df[,order(colnames(df), decreasing = TRUE)]
 
-matchtable <- match(colnames(df_ordered), LUAD_Samples_DDRD_ordered[,1])
+matchtable <- match(colnames(df_ordered), LUXX_Samples_DDRD_ordered[,1])
 which(matchtable[]!="NA")
 
 df_ordered_matched <- df_ordered[,which(matchtable[]!="NA")]
@@ -205,9 +208,11 @@ df_ordered_matched_Genes <- t(df_ordered_matched_Genes)
 rownames(df_ordered_matched_Genes) <- rn_Samples
 
 # save tables
-save(df_ordered_matched_Genes,file="df_ordered_matched_Gene_23June17.rda")
-save(LUAD_Samples_DDRD_ordered,file="LUAD_Samples_DDRD_ordered_23June17.rda")
-
+# save tables
+save(df_ordered_matched_Genes,file="df_TCGA_LUAD_ordered_matched_Gene_23June17.rda")
+save(df_ordered_matched_Genes,file="df_TCGA_LUSC_ordered_matched_Gene_23June17.rda")
+save(LUXX_Samples_DDRD_ordered,file="LUAD_Samples_DDRD_ordered_23June17.rda")
+save(LUXX_Samples_DDRD_ordered,file="LUSC_Samples_DDRD_ordered_23June17.rda")
 
 
 # ## try http:// if https:// URLs are not supported
