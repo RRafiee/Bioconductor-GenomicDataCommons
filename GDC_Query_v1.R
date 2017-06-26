@@ -66,7 +66,16 @@ library(GenomicDataCommons)
 #############################################################
 install_all_packages_automatic("mnormt")
 install_all_packages_automatic("TCGAbiolinks")
+
+library(mnormt)
 library(TCGAbiolinks)
+
+# check for the default fields
+# so that we can use one of them to build a filter
+#pQuery <- projects()
+#default_fields(pQuery)
+#pQuery <- filter(pQuery,~ project_id == 'TCGA-LUAD')
+#get_filter(pQuery)
 
 query_LUAD <- GDCquery(project = "TCGA-LUAD", 
                   legacy = TRUE,
@@ -97,11 +106,18 @@ df <- GDCprepare(query,
                  save.filename = "LUAD_geneExp_dataframe.rda",
                  summarizedExperiment = FALSE)
 
-# Case 2: SummarizedExperiment object
-se <- GDCprepare(query, 
+# Case 1: Dataframe as output
+df <- GDCprepare(query, 
                  save=TRUE,
-                 save.filename = "LUAD_geneExp_dataframe.rda",
-                 summarizedExperiment = TRUE)
+                 save.filename = "LUSC_geneExp_dataframe.rda",
+                 summarizedExperiment = FALSE)
+
+
+# Case 2: SummarizedExperiment object
+#se <- GDCprepare(query, 
+#                 save=TRUE,
+#                 save.filename = "LUAD_geneExp_dataframe.rda",
+#                 summarizedExperiment = TRUE)
 
 # Error in the above command when summarizedExperiment is TRUE: lexical error: invalid char in json text.
 # <?xml version="1.0" ?> <respons
@@ -111,9 +127,13 @@ se <- GDCprepare(query,
 geneExp <- SummarizedExperiment::assay(se)
 #############################################################
 # Loading data
-#load("LUAD_geneExp_dataframe.rda")
-#df_LUAD_TCGA <- data
+load("LUAD_geneExp_dataframe.rda")
+df_LUAD_TCGA <- data
+df <- df_LUAD_TCGA
 
+load("LUSC_geneExp_dataframe.rda")
+df_LUSC_TCGA <- data
+df <- df_LUSC_TCGA
 #############################################################
 # This part aims to match colnames of df with the DDRD table
 
@@ -179,11 +199,12 @@ matchtable3 <- grep("AC138128.1",rownames(df_ordered_matched)) # no gene name in
 matchtable3 <- grep("OR2I1P",rownames(df_ordered_matched))     # no gene name ...
 matchtable3 <- grep("AL137218.1",rownames(df_ordered_matched)) # no gene name ...
 
-
+# Transpose df_ordered_matched_Genes table
 rn_Samples <- colnames(df_ordered_matched_Genes)
 df_ordered_matched_Genes <- t(df_ordered_matched_Genes)
 rownames(df_ordered_matched_Genes) <- rn_Samples
 
+# save tables
 save(df_ordered_matched_Genes,file="df_ordered_matched_Gene_23June17.rda")
 save(LUAD_Samples_DDRD_ordered,file="LUAD_Samples_DDRD_ordered_23June17.rda")
 
