@@ -77,6 +77,9 @@ library(TCGAbiolinks)
 #pQuery <- filter(pQuery,~ project_id == 'TCGA-LUAD')
 #get_filter(pQuery)
 
+################################################################
+# Gene expression - RNA-Seq 
+################################################################
 query_LUAD <- GDCquery(project = "TCGA-LUAD", 
                   legacy = TRUE,
                   data.category = "Gene expression", 
@@ -96,6 +99,25 @@ query_LUSC <- GDCquery(project = "TCGA-LUSC",
                   experimental.strategy = "RNA-Seq")
 
 GDCdownload(query_LUSC)
+################################################################
+
+################################################################
+# Methylation Array 450k 
+################################################################
+query_LUAD <- GDCquery(project = "TCGA-LUAD",
+                       legacy = TRUE,
+                       data.category = "DNA methylation",
+                       data.type = "Methylation beta value",
+                       experimental.strategy = "Methylation Array",
+                       platform = "Illumina Human Methylation 450")
+
+GDCdownload(query_LUAD)
+df <- GDCprepare(query_LUAD, 
+                 save=TRUE,
+                 save.filename = "LUAD_DNAMethylation450k_dataframe_26June17.rda",
+                 summarizedExperiment = FALSE)
+
+################################################################
 
 #query <- query_LUAD
 query <- query_LUSC
