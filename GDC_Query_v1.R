@@ -248,6 +248,44 @@ save(LUXX_Samples_DDRD_ordered,file="LUSC_Samples_DDRD_ordered_23June17.rda")
 # library(dplyr)
 # TCGAbiolinksGUI(run = TRUE)
 
+##################################################################################################
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+##################################################################################################
+# Analysing of lung cancer (LUAD and LUSC)
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+load("df_TCGA_LUAD_ordered_matched_Gene_23June17.rda")
+load("LUAD_Samples_DDRD_ordered_23June17.rda")
+df_ordered_matched_Genes_01 <- df_ordered_matched_Genes
+
+# gene names as the column names should be changed to the correct names
+for (i in 1:ncol(df_ordered_matched_Genes_01))
+{
+  #i <- 2
+  pos11 <- regexpr('\\|', colnames(df_ordered_matched_Genes_01)[i])
+  N1 <- substr(colnames(df_ordered_matched_Genes_01)[i], 1,pos11[1]-1)
+  colnames(df_ordered_matched_Genes_01)[i] <- N1
+}
+
+combinmatrix1 <- cbind(df_ordered_matched_Genes_01,LUAD_Samples_DDRD_ordered$DDRD.call)
+
+combinmatrix1_G1 <- combinmatrix1[which(combinmatrix1[,42] == 1),]
+combinmatrix1_G2 <- combinmatrix1[which(combinmatrix1[,42] == 2),]
+combinmatrix1_G3 <- combinmatrix1[which(combinmatrix1[,42] == 3),]
+combinmatrix1_G4 <- combinmatrix1[which(combinmatrix1[,42] == 4),]
+
+combinmatrix1_GroupsOrdered14 <- rbind(combinmatrix1_G1,combinmatrix1_G2,combinmatrix1_G3,combinmatrix1_G4)
+rownames(combinmatrix1_GroupsOrdered14) <- combinmatrix1_GroupsOrdered14[,42]
+
+library(grid)
+library(pheatmap) 
+pheatmap(t(combinmatrix1_GroupsOrdered14[1:517,c(1:6,8,10,12,14,18,20,26,33,35,40)]),color = colorRampPalette(c("navy", "white", "firebrick4"))(100),
+         clustering_method = "ward.D2",cluster_rows = FALSE, cluster_cols = FALSE,
+         annotation_names_row = FALSE, scale ="row",fontsize_row = 10,fontsize_col = 20,show_colnames = F)
+
+pheatmap(t(combinmatrix1_GroupsOrdered14[1:517,c(7,9,11,13,15,17,16,19,21:25,27:30,31,32,34,36:39,41)]),color = colorRampPalette(c("navy", "white", "firebrick4"))(100),
+         clustering_method = "ward.D2",cluster_rows = FALSE, cluster_cols = FALSE,
+         annotation_names_row = FALSE, scale ="row",fontsize_row = 10,fontsize_col = 20,show_colnames = F)
+
 
 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 # End
