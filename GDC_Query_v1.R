@@ -236,6 +236,49 @@ save(df_ordered_matched_Genes,file="df_TCGA_LUSC_ordered_matched_Gene_23June17.r
 save(LUXX_Samples_DDRD_ordered,file="LUAD_Samples_DDRD_ordered_23June17.rda")
 save(LUXX_Samples_DDRD_ordered,file="LUSC_Samples_DDRD_ordered_23June17.rda")
 
+# 30 June 2017
+##############################################################################
+library(mnormt)
+library(TCGAbiolinks)
+# Gene expression - RNA_Seq parameter setting ################################
+TCGAprojectname <- "TCGA-LUAD" #"TCGA-LUSC"
+TCGAdatacategory <- "Gene expression"
+TCGAdatatype <- "Gene expression quantification"
+TCGAplatform <- "Illumina HiSeq"
+TCGAfiletype <- "normalized_results"
+TCGAexperimentalstratgy <- "RNA-Seq"
+##############################################################################
+# DNA methylation - 450k parameter setting ###################################
+TCGAprojectname <- "TCGA-LUSC" #"TCGA-LUAD" 
+TCGAdatacategory <- "DNA Methylation"
+TCGAdatatype <- "Methylation Beta Value"
+TCGAplatform <- "Illumina Human Methylation 450"
+TCGAfiletype <- ""
+TCGAexperimentalstratgy <- "Methylation Array"
+##############################################################################
+# DNA methylation - 27k parameter setting ####################################
+TCGAprojectname <- "TCGA-LUSC" #"TCGA-LUAD" #
+TCGAdatacategory <- "DNA Methylation"
+TCGAdatatype <- "Methylation beta value"
+TCGAplatform <- "Illumina Human Methylation 27"
+TCGAfiletype <- ""
+TCGAexperimentalstratgy <- "Methylation Array"
+##############################################################################
+# Make a query using GDCquery function
+TCGA_query <- GDCquery(project = TCGAprojectname, 
+                       legacy = TRUE,
+                       data.category = TCGAdatacategory, 
+                       data.type = TCGAdatatype,
+                       platform = TCGAplatform,
+                       #file.type = TCGAfiletype, # should be commented for the Methylation array
+                       experimental.strategy = TCGAexperimentalstratgy)
+
+GDCdownload(TCGA_query)
+df <- GDCprepare(TCGA_query, 
+                 save=TRUE,
+                 save.filename = paste(TCGAprojectname,"_",TCGAplatform,".rda",sep = ""),
+                 summarizedExperiment = FALSE)
+#######################################################################
 
 # ## try http:// if https:// URLs are not supported
 # source("https://bioconductor.org/biocLite.R")
