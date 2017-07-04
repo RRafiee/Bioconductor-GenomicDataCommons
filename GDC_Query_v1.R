@@ -277,9 +277,18 @@ df <- GDCprepare(TCGA_query,
 ##################################################################################################
 # Analysing of lung cancer (LUAD and LUSC)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# For LUAD samples
 load("df_TCGA_LUAD_ordered_matched_Gene_23June17.rda")
 load("LUAD_Samples_DDRD_ordered_23June17.rda")
+
+# For LUSC samples
+load("df_TCGA_LUSC_ordered_matched_Gene_23June17.rda")
+load("LUSC_Samples_DDRD_ordered_23June17.rda")
+
+
 df_ordered_matched_Genes_01 <- df_ordered_matched_Genes
+
+
 
 # gene names as the column names should be changed to the correct names
 for (i in 1:ncol(df_ordered_matched_Genes_01))
@@ -290,14 +299,22 @@ for (i in 1:ncol(df_ordered_matched_Genes_01))
   colnames(df_ordered_matched_Genes_01)[i] <- N1
 }
 
-combinmatrix1 <- cbind(df_ordered_matched_Genes_01,LUAD_Samples_DDRD_ordered$DDRD.call)
+# df_ordered_matched_Genes_01 <- log2(df_ordered_matched_Genes_01 + 0.000000001) # to avoid from Log2(0) error
 
+combinmatrix1 <- cbind(df_ordered_matched_Genes_01,LUAD_Samples_DDRD_ordered$DDRD.call)     # for LUAD
+combinmatrix1 <- cbind(df_ordered_matched_Genes_01,LUXX_Samples_DDRD_ordered$DDRD.quartile) # for LUSC
+
+# for both: LUAD and LUSC
 combinmatrix1_G1 <- combinmatrix1[which(combinmatrix1[,42] == 1),]
 combinmatrix1_G2 <- combinmatrix1[which(combinmatrix1[,42] == 2),]
 combinmatrix1_G3 <- combinmatrix1[which(combinmatrix1[,42] == 3),]
 combinmatrix1_G4 <- combinmatrix1[which(combinmatrix1[,42] == 4),]
-
 combinmatrix1_GroupsOrdered14 <- rbind(combinmatrix1_G1,combinmatrix1_G2,combinmatrix1_G3,combinmatrix1_G4)
+
+#save(combinmatrix1_GroupsOrdered14,file="df_TCGA_517_LUAD_41ordered_matched_Gene_CorrectGeneName_DDRDScore_3rdJuly17.rda")
+#save(combinmatrix1_GroupsOrdered14,file="df_TCGA_501_LUSC_41ordered_matched_Gene_CorrectGeneName_DDRDScore_3rdJuly17.rda")
+
+# DDRD subgroups in row names
 rownames(combinmatrix1_GroupsOrdered14) <- combinmatrix1_GroupsOrdered14[,42]
 
 library(grid)
