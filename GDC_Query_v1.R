@@ -45,25 +45,6 @@ install_all_packages_automatic("magrittr")
 library(GenomicDataCommons)
 
 #############################################################
-#Check basic functionality
-#GenomicDataCommons::status()
-
-#library(magrittr)
-
-#ge_manifest = files() %>% 
-#  filter( ~ cases.project.project_id == 'TCGA-OV' &
-#            type == 'gene_expression' &
-#            analysis.workflow_type == 'HTSeq - Counts') %>%
-#  manifest()
-
-#ge_manifest = files() %>% 
-#  filter( ~ cases.project.project_id == 'TCGA-LUAD' &
-#            type == 'gene_expression' &
-#            analysis.workflow_type == 'HTSeq - Counts') %>%
-# manifest()
-#############################################################
-
-#############################################################
 install_all_packages_automatic("mnormt")
 install_all_packages_automatic("TCGAbiolinks")
 
