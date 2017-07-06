@@ -151,8 +151,8 @@ rownames(combinmatrix1_GroupsOrdered14)[314] # TCGA.67.3770.01
 rownames(combinmatrix1_GroupsOrdered14)[369] # TCGA.44.2659.01
 #length(which(rownames(combinmatrix1_GroupsOrdered14) %in% unique(as.character(table1_methylation$Short_Sample_ID))))
 
-length(which(table1_methylation_matched_withDuplicates_ordered$Platform == "HumanMethylation450")) # n=470
-length(which(table1_methylation_matched_withDuplicates_ordered$Platform == "HumanMethylation27.")) # n=65
+length(which(table1_methylation_matched_withDuplicates_ordered$Platform == "HumanMethylation450")) # n=470 (LUAD) , n=370 (LUSC)
+length(which(table1_methylation_matched_withDuplicates_ordered$Platform == "HumanMethylation27.")) # n=65 (LUAD)  , n=131 (LUSC)
 
 
 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
