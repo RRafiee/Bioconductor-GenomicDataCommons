@@ -102,8 +102,56 @@ length(which(as.character(table1_methylation$Flag)=="1")) # for LUSC, n=501 and 
 #load("LUAD_DNAMethylation450k_dataframe_28June17.rda") #Error in View : cannot allocate vector of size 3.7 Mb
 #colnames(data)
 #head(rownames(data))
-
 #as.character(LUAD_Samples_DDRD$Sample_ID[1])
+
+#-----------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
+# We have multiple methylation data (LUAD and not LUSC) for a specific sample name (Sample_ID)
+# This part handle this issue
+table1_methylation <- read.table("Index_table_LUAD_TCGA_Methylation450K27K_FlagMatched_05July17.txt",header=T, sep="\t")  # loading the single file 
+length(which(as.character(table1_methylation$Flag)=="1"))
+table1_methylation_matched_withDuplicates <- table1_methylation[which(as.character(table1_methylation$Flag)=="1"),] 
+table1_methylation_matched_withDuplicates <- cbind(table1_methylation_matched_withDuplicates,"0")
+colnames(table1_methylation_matched_withDuplicates)[6] <- "Duplicate"
+
+# order sample names column
+table1_methylation_matched_withDuplicates_ordered <- as.data.frame(table1_methylation_matched_withDuplicates[order(table1_methylation_matched_withDuplicates$Short_Sample_ID),])
+
+# DO NOT use R functions like duplicate, unique, etc.
+UPi <- nrow(table1_methylation_matched_withDuplicates_ordered) - 1 
+i <- 1
+while (i <= UPi)
+ {
+  j <- i + 1 
+   while (j <= nrow(table1_methylation_matched_withDuplicates_ordered))
+   {
+     ix1 <- as.character(table1_methylation_matched_withDuplicates_ordered$Short_Sample_ID[i])
+     ix2 <- as.character(table1_methylation_matched_withDuplicates_ordered$Short_Sample_ID[j])
+     if (ix1 == ix2)
+     {
+       #print("Matched")
+       table1_methylation_matched_withDuplicates_ordered$Duplicate[i] <- "NA"
+       table1_methylation_matched_withDuplicates_ordered$Duplicate[j] <- "NA"
+     }
+     j <- j + 1
+   }
+  i <- i + 1
+ }
+  
+length(which(is.na(table1_methylation_matched_withDuplicates_ordered$Duplicate))) # n=30 (each sample has two duplicates)
+table1_methylation_matched_withDuplicates_ordered[which(is.na(table1_methylation_matched_withDuplicates_ordered$Duplicate)),c(2,4,5)]
+write.csv(table1_methylation_matched_withDuplicates_ordered,"Index_table_LUAD_TCGA_Methylation450K27K_FlagMatched_duplicates_06July17.csv")
+write.table(table1_methylation_matched_withDuplicates_ordered,"Index_table_LUAD_TCGA_Methylation450K27K_FlagMatched_duplicates_06July17.txt",sep="\t",row.names=TRUE)
+
+length(which(table1_methylation_matched_withDuplicates_ordered$Duplicate == 0)) # n=505 unique samples
+# I will choose 10 samples from duplicates so totally n=515 unique methylaion data for LUAD
+
+# Remove the two follwoing samples from the reference (n=515 in stead of 517)
+rownames(combinmatrix1_GroupsOrdered14)[314] # TCGA.67.3770.01
+rownames(combinmatrix1_GroupsOrdered14)[369] # TCGA.44.2659.01
+#length(which(rownames(combinmatrix1_GroupsOrdered14) %in% unique(as.character(table1_methylation$Short_Sample_ID))))
+
+
 
 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 # End
