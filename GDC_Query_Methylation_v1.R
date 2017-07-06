@@ -29,7 +29,7 @@ temp_folder <- list.dirs(path = Folder_path, full.names = TRUE, recursive = TRUE
 
 table1 <- as.data.frame.array(matrix(nrow = length(temp_folder)-1, ncol = 3,0))
 colnames(table1)[1] <- "Path_Filename" 
-colnames(table1)[2] <- "Sample_ID" 
+colnames(table1)[2] <- "Sample_ID"  # technically this field is a barcode
 colnames(table1)[3] <- "Flag"  # Flag showing the match between sample names of the clinical data and methylation
 
 for (i in 2:length(temp_folder))
