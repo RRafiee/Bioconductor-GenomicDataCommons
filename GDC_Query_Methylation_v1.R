@@ -96,6 +96,9 @@ for (i in 1:nrow(table1_methylation))
 #write.table(table1_methylation,"Index_table_LUAD_TCGA_Methylation450K27K_FlagMatched_05July17.txt",sep="\t",row.names=TRUE)
 write.table(table1_methylation,"Index_table_LUSC_TCGA_Methylation450K27K_FlagMatched_05July17.txt",sep="\t",row.names=TRUE)
 
+#length(which(as.character(table1_methylation$Flag)=="1")) # for LUSC, n=535 while my reference is n=517
+length(which(as.character(table1_methylation$Flag)=="1")) # for LUSC, n=501 and covered exactly all my reference samples
+
 #load("LUAD_DNAMethylation450k_dataframe_28June17.rda") #Error in View : cannot allocate vector of size 3.7 Mb
 #colnames(data)
 #head(rownames(data))
