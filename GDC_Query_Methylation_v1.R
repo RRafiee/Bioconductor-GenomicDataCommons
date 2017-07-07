@@ -154,7 +154,7 @@ rownames(combinmatrix1_GroupsOrdered14)[369] # TCGA.44.2659.01
 length(which(table1_methylation_matched_withDuplicates_ordered$Platform == "HumanMethylation450")) # n=470 (LUAD) , n=370 (LUSC)
 length(which(table1_methylation_matched_withDuplicates_ordered$Platform == "HumanMethylation27.")) # n=65 (LUAD)  , n=131 (LUSC)
 
-
+# All LUSC methylation data downloaded need to be checked for matching with the refernce samples
 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 # End
 ##################################################################################################
