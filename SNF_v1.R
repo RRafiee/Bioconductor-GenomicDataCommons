@@ -120,6 +120,21 @@ LG_T <- which(M_label[,2] == G1) # true labels
 length(LG_T) #G4:129, G3:129
 length(LG_C) #G4:97,  G3:88
 #
+# Combining data types.
+# SNF can be used to incorporate arbitrary types of discrete (binary or categorical) 
+# and continuous data. For integration of discrete data, we recommend the use of chi-squared 
+# distance as the similarity measure. Compatibility of data sources can be checked via 
+# normalized mutual information (NMI). If the patient similarity obtained from different data
+# sources is completely discordant; NMI can help to clarify which data should and
+# which should not be combined.
+
+# Before applying our SNF, we performed three steps of preprocessing: 
+# outlier removal, missing-data imputation and normalization.
+# If a patient had more than 20% missing data in a certain data type,
+# we did not consider this patient. Similarly, if a certain biological feature (for example, mRNA expression)
+# had more than 20% of missing values across patients, we filtered out this feature. 
+# Also, for missing data, we used K nearest neighbor (KNN) imputation21,
+# where the number of neighbors is the same with K value used in our method 
 
 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 # End
