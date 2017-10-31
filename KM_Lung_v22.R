@@ -149,7 +149,6 @@ tmp$DDRD.call[idx_call_23] <- "23"
 idx_call_12 <- c(which(tmp$DDRD.call == "1"),which(tmp$DDRD.call == "2"))
 tmp$DDRD.call[idx_call_12] <- "12"
 #######################################################################
-
 ### OS
 f <- npsurv(Surv(OS_MONTHS, OS_STATUS) ~ DDRD.call , data=tmp)  # OS
 survdiff(Surv(OS_MONTHS, OS_STATUS) ~ DDRD.call , data=tmp, rho = 0)  # OS
