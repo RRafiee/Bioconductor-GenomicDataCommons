@@ -154,5 +154,5 @@ LUAD_Chemo_Received_Without_Duplicate_WithClinicalInfo <- cbind(datafileObject_L
 
 write.csv(LUAD_Chemo_Received_Without_Duplicate_WithClinicalInfo,"LUAD_Chemo_Received_Without_Duplicate_WithClinicalInfo_152_AllStages_221117.csv")
 
-as.character(LUAD_Chemo_Received_Without_Duplicate_WithClinicalInfo$Sample_ID)
-as.character(LUAD_Chemo_Received_Without_Duplicate_WithClinicalInfo$Bcr.Patient.Barcode)
+#as.character(LUAD_Chemo_Received_Without_Duplicate_WithClinicalInfo$Sample_ID)
+#as.character(LUAD_Chemo_Received_Without_Duplicate_WithClinicalInfo$Bcr.Patient.Barcode)
